@@ -1,0 +1,29 @@
+name: release-al
+run-name: Upload release zip to GitHub and ESOUI
+on:
+  release:
+    types: [released]
+env:
+  GH_TOKEN: ${{ github.token }}
+  zipname: AlwaysLogging-${{ github.ref_name }}.zip
+jobs:
+  zipit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir .tmp
+          mv * .tmp
+          mv .tmp AlwaysLogging
+          zip -r ${{ env.zipname }} AlwaysLogging
+      - run: gh release upload ${{ github.ref_name }} ${{ env.zipname }}
+      - run: |
+          version=${{ github.ref_name }}
+          IFS="${IFS}."
+          set -- $version
+          unset -v IFS
+          pkg_ver="$1.$2"
+          eso_ver="$3.$4.$5"
+          curl -H "x-api-token: ${{ secrets.esoui_token }}" -F "id=4081" -F "version=${{ github.ref_name }}" -F "compatible=${eso_ver}" -F "updatefile=@${{ env.zipname }}" https://api.esoui.com/addons/update
