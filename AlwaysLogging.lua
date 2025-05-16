@@ -1,8 +1,14 @@
-local function on_player_loaded()
+local function enable_logging()
     if not IsEncounterLogEnabled() then
         SetEncounterLogEnabled(true)
         CHAT_ROUTER:AddSystemMessage('Encounter logging enabled by addon.')
     end
 end
 
-EVENT_MANAGER:RegisterForEvent('Always Logging', EVENT_PLAYER_ACTIVATED, on_player_loaded)
+EVENT_MANAGER:RegisterForEvent('Always Logging', EVENT_PLAYER_ACTIVATED, enable_logging)
+EVENT_MANAGER:RegisterForEvent('Always Logging', EVENT_PLAYER_COMBAT_STATE,
+			       function(eventCode, inCombat)
+				  if inCombat then
+				     enable_logging()
+				  end
+			       end)
