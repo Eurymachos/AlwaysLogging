@@ -1,7 +1,7 @@
 ## Title: Always Enable Encounter Log
 ## Author: Eurymachos
 ## Description: Always enables the encounter log for you.
-## Version: 3.1.11.1.0
-## APIVersion: 101046 101047
+## Version: 3.1.11.3.0
+## APIVersion: 101048 101049
 
 AlwaysLogging.lua

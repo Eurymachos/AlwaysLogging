@@ -6,9 +6,4 @@ local function enable_logging()
 end
 
 EVENT_MANAGER:RegisterForEvent('Always Logging', EVENT_PLAYER_ACTIVATED, enable_logging)
-EVENT_MANAGER:RegisterForEvent('Always Logging', EVENT_PLAYER_COMBAT_STATE,
-			       function(eventCode, inCombat)
-				  if inCombat then
-				     enable_logging()
-				  end
-			       end)
+EVENT_MANAGER:RegisterForEvent('Always Logging', EVENT_PLAYER_COMBAT_STATE, enable_logging)
